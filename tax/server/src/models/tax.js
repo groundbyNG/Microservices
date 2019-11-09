@@ -15,6 +15,10 @@ const taxSchema = new Schema({
         type: Date,
         required: true
     },
+    taxRate: {
+        type: Number,
+        required: true
+    },
     tax: {
         type: Number,
         required: true

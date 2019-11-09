@@ -1,10 +1,10 @@
-const EXTRA_LOW = 9.325;
-const LOW = 37.950;
-const MEDIUM = 91.900;
-const LARGE = 191.650;
-const EXTRA_LARGE = 416.700;
+const EXTRA_LOW = 9325;
+const LOW = 37950;
+const MEDIUM = 91900;
+const LARGE = 191650;
+const EXTRA_LARGE = 416700;
 
-export const countTaxRate = (incomeSum) => {
+const countTaxRate = (incomeSum) => {
     if (incomeSum <= EXTRA_LOW) {
         return 10;
     } else if (incomeSum <= LOW) {
@@ -18,3 +18,5 @@ export const countTaxRate = (incomeSum) => {
     }
     return 35;
 }
+
+export default countTaxRate;

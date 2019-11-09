@@ -27,7 +27,6 @@ users.get("/:id", function(req, res){
 users.post("/", jsonParser, function (req, res) {
         
     if(!req.body) return res.sendStatus(400);
-        console.log(req.body);
         
     const { name, surname, incomeSum } = req.body;
     const user = new User({ name, surname, incomeSum, taxes: [], taxRate: countTaxRate(incomeSum)});

@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../../models/user';
+import Tax from '../../models/tax';
 
 const tax = express.Router();
 const jsonParser = express.json();
@@ -23,25 +24,25 @@ tax.post("/:id", jsonParser, function (req, res) {
     const { 
         destination,
         amount,
-        date,
         tax,
      } = req.body;
 
     User.findOne({_id: userId}, function(err, user){
         if(err) return res.send('User not found');
-        const tax = new Tax({
+        const newTax = new Tax({
             destination,
             amount,
-            date,
+            date: new Date(),
             tax,
+            taxRate: user.taxRate,
         });
-        user.taxes.push(tax);
+        user.taxes.push(newTax);
         user.save(function(err){
             if(err) {
                 console.log(err);
                 return res.send('Error to push new tax');
             }
-            res.send(tax);
+            res.send(newTax);
         });   
     });
 });
