@@ -51,18 +51,20 @@ users.put("/", jsonParser, function(req, res){
          
     if(!req.body) return res.sendStatus(400);
     const { id, name, surname, incomeSum } = req.body;
-    const oldUser = User.findOne({_id: id});
-
-    const newUser = { 
-        name,
-        surname, 
-        incomeSum, 
-        taxes: oldUser.taxes,
-        taxRate: oldUser.incomeSum !== incomeSum ? countTaxRate(incomeSum) : oldUser.taxRate,
-    };
-    User.findOneAndUpdate({_id: id}, newUser, {new: true}, function(err, user){
-        if(err) return console.log(err); 
-        res.send(user);
+    User.findOne({_id: id}, (err, user) => {
+        if(err) return console.log(err);
+        
+        user.name = name;
+        user.surname = surname;
+        user.incomeSum = incomeSum;
+        if (user.incomeSum !== incomeSum) {
+            user.taxRate = countTaxRate(incomeSum)
+        }
+        
+        user.save(function(err){
+            if(err) return console.log(err);
+            res.send(user);
+        });
     });
 });
 
