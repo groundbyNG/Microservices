@@ -8,7 +8,7 @@ const jsonParser = express.json();
 tax.get("/:id", function(req, res){
          
     const userId = req.params.id;
-    User.findOne({_id: userId}, function(err, user){
+    User.findOne({passportId: userId}, function(err, user){
           
         if(err) return res.send('User not found');
         res.send(user.taxes);
@@ -18,16 +18,16 @@ tax.get("/:id", function(req, res){
 tax.post("/:id", jsonParser, function (req, res) {
         
     if(!req.body) return res.sendStatus(400);
-        console.log(req.body);
     
-    const userId = req.params.id;    
+    const userId = req.params.id; 
+       
     const { 
         destination,
         amount,
         tax,
      } = req.body;
 
-    User.findOne({_id: userId}, function(err, user){
+    User.findOne({passportId: userId}, function(err, user){
         if(err) return res.send('User not found');
         const newTax = new Tax({
             destination,
@@ -50,7 +50,7 @@ tax.post("/:id", jsonParser, function (req, res) {
 tax.get("/:id/taxRate", function(req, res){
          
     const userId = req.params.id;
-    User.findOne({_id: userId}, function(err, user){
+    User.findOne({passportId: userId}, function(err, user){
           
         if(err) return res.send('User not found');
         res.send(user.taxRate);

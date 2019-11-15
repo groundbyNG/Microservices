@@ -9,6 +9,7 @@ function UserChange({ method }) {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [incomeSum, setIncomeSum] = useState('');
+  const [passportId, setPassportId] = useState('');
 
   const history = useHistory();
   const { userId } = useParams();
@@ -21,6 +22,7 @@ function UserChange({ method }) {
         setName(name);
         setSurname(surname);
         setIncomeSum(incomeSum);
+        setPassportId(passportId);
         setStatus(false);
       } catch (err) { console.log(err); }
     })()
@@ -29,6 +31,7 @@ function UserChange({ method }) {
   const handleName = (event) => setName(event.target.value);
   const handleSurname = (event) => setSurname(event.target.value);
   const handleIncomeSum = (event) => setIncomeSum(event.target.value);
+  const handlePassportId = (event) => setPassportId(event.target.value);
 
 
   const onChangeUser = async (e) => {
@@ -39,6 +42,7 @@ function UserChange({ method }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          passportId,
           name,
           surname,
           incomeSum
@@ -68,6 +72,10 @@ function UserChange({ method }) {
         <form onSubmit={onChangeUser}>
           <h3>{method === "change" ? 'Modify' : 'Create new'} taxpayer</h3> 
           <br/>
+          <div className="form-group">
+            <label htmlFor="passportId">Passport ID</label>
+            <input disabled={method === "change"} type="text" className="form-control" required value={passportId} id="passportId" onChange={handlePassportId} />
+          </div>
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input type="text" className="form-control" required value={name} id="name" onChange={handleName} placeholder="Enter name" />
