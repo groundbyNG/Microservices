@@ -52,12 +52,12 @@ function Home() {
                       <td>{user.surname}</td>
                       <td>{user.incomeSum}$</td>
                       <td>{user.taxRate}%</td>
-                      <td><Link to={`/user/${user._id}`}>{user.taxes.length}</Link></td>
+                      <td><Link to={`/user/${user.passportId}`}>{user.taxes.length}</Link></td>
                       <td>
-                        <Link to={`/change/${user._id}`}>
+                        <Link to={`/change/${user.passportId}`}>
                           <button type="button" className="btn btn-warning btn-sm">Modify</button>
                         </Link>
-                        <button type="button" onClick={() => {onRemoveUser(user._id)}} className="btn btn-danger btn-sm">Remove</button>
+                        <button type="button" onClick={() => {onRemoveUser(user.passportId)}} className="btn btn-danger btn-sm">Remove</button>
                       </td>
                     </tr>
                   )

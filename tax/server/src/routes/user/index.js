@@ -28,8 +28,8 @@ users.post("/", jsonParser, function (req, res) {
         
     if(!req.body) return res.sendStatus(400);
         
-    const { name, surname, incomeSum } = req.body;
-    const user = new User({ name, surname, incomeSum, taxes: [], taxRate: countTaxRate(incomeSum)});
+    const { passportId, name, surname, incomeSum } = req.body;
+    const user = new User({ passportId, name, surname, incomeSum, taxes: [], taxRate: countTaxRate(incomeSum)});
         
     user.save(function(err){
         if(err) return console.log(err);
@@ -39,8 +39,8 @@ users.post("/", jsonParser, function (req, res) {
      
 users.delete("/:id", function(req, res){
          
-    const id = req.params.id;
-    User.findByIdAndDelete(id, function(err, user){
+    const passportId = req.params.id;
+    User.findByIdAndDelete(passportId, function(err, user){
                 
         if(err) return console.log(err);
         res.send(user);
@@ -51,7 +51,7 @@ users.put("/", jsonParser, function(req, res){
          
     if(!req.body) return res.sendStatus(400);
     const { id, name, surname, incomeSum } = req.body;
-    User.findOne({_id: id}, (err, user) => {
+    User.findOne({ _id: id}, (err, user) => {
         if(err) return console.log(err);
         
         user.name = name;
