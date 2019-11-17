@@ -18,7 +18,7 @@ function UserChange({ method }) {
     method === "change" && (async function func() {
       try {
         const response = await fetch(`${api}/users/${userId}`, { method: 'GET' });
-        const { name, surname, incomeSum } = await response.json();
+        const { passportId, name, surname, incomeSum } = await response.json();
         setName(name);
         setSurname(surname);
         setIncomeSum(incomeSum);
@@ -51,7 +51,7 @@ function UserChange({ method }) {
       if (method === "change") {
         options.method = "PUT";
         options.body = JSON.stringify({
-          id: userId,
+          passportId,
           name,
           surname,
           incomeSum
@@ -90,7 +90,7 @@ function UserChange({ method }) {
               <input type="number" className="form-control" required value={incomeSum} onChange={handleIncomeSum} id="incomeSum" placeholder="Enter income sum" />$
             </div>
           </div>
-          <button type="submit" className="btn btn-primary">Create</button>
+          <button type="submit" className="btn btn-primary">{method === "change" ? 'Modify' : 'Create'}</button>
         </form>
       )}
     </>

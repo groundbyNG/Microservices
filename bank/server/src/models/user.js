@@ -44,6 +44,7 @@ userSchema.pre('save', function (next) {
   userSchema.statics.authenticate = function (passportId, password, callback) {
     mongoose.model('User', userSchema).findOne({ passportId })
       .exec(function (err, user) {
+        
         if (err) {
           return callback(err)
         } else if (!user) {
@@ -52,7 +53,7 @@ userSchema.pre('save', function (next) {
           return callback(err);
         }
         bcrypt.compare(password, user.password, function (err, result) {
-          if (result === true) {
+          if (result) {
             return callback(null, user);
           } else {
             return callback();

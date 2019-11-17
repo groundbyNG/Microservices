@@ -1,6 +1,7 @@
 import express from 'express';
 import User from '../../models/user';
 import { sendUserCreateRequest } from '../tax';
+import { generateToken } from '../../middleware/auth';
 
 const signup = express.Router();
 const jsonParser = express.json();
@@ -15,16 +16,7 @@ signup.post("/", jsonParser, sendUserCreateRequest, function (req, res) {
     user.save(function(err){
         if(err) return console.log(err);
         
-        User.authenticate(passportId, password, function (error, user) {
-            if (error || !user) {
-              var err = new Error('Wrong email or password.');
-              err.status = 401;
-              return res.send(err);
-            } else {
-              req.session.userId = user.passportId;
-              res.sendStatus(200);
-            }
-        });
+        User.authenticate(passportId, password, (err, user) => generateToken(err, user, res));
     });
 });
  

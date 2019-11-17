@@ -17,7 +17,7 @@ users.get("/", function(req, res){
 users.get("/:id", function(req, res){
          
     const id = req.params.id;
-    User.findOne({_id: id}, function(err, user){
+    User.findOne({passportId: id}, function(err, user){
           
         if(err) return res.send('Not found');
         res.send(user);
@@ -40,7 +40,7 @@ users.post("/", jsonParser, function (req, res) {
 users.delete("/:id", function(req, res){
          
     const passportId = req.params.id;
-    User.findByIdAndDelete(passportId, function(err, user){
+    User.findOneAndDelete({ passportId }, function(err, user){
                 
         if(err) return console.log(err);
         res.send(user);
@@ -50,8 +50,8 @@ users.delete("/:id", function(req, res){
 users.put("/", jsonParser, function(req, res){
          
     if(!req.body) return res.sendStatus(400);
-    const { id, name, surname, incomeSum } = req.body;
-    User.findOne({ _id: id}, (err, user) => {
+    const { passportId, name, surname, incomeSum } = req.body;
+    User.findOne({ passportId }, (err, user) => {
         if(err) return console.log(err);
         
         user.name = name;
