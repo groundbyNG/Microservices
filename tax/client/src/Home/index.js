@@ -17,9 +17,9 @@ function Home() {
     } catch (err) { console.log(err); }
   }
 
-  const onRemoveUser = async(userId) => {
+  const onRemoveUser = async(passportId) => {
     try {
-      await fetch(`${api}/users/${userId}`, { method: 'DELETE' });
+      await fetch(`${api}/users/${passportId}`, { method: 'DELETE' });
       await getUsers();
     } catch (err) { console.log(err); }
   }

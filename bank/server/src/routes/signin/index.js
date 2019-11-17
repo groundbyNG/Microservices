@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../../models/user';
+import { generateToken } from '../../middleware/auth';
 
 const signin = express.Router();
 const jsonParser = express.json();
@@ -10,16 +11,7 @@ signin.post("/", jsonParser, function (req, res) {
         
     const { passportId, password } = req.body;
 
-    User.authenticate(passportId, password, function (error, user) {
-        if (error || !user) {
-          var err = new Error('Wrong email or password.');
-          err.status = 401;
-          return res.send(err);
-        } else {
-          req.session.userId = user.passportId;
-          return res.sendStatus(200);
-        }
-    });
+    User.authenticate(passportId, password, (err, user) => generateToken(err, user, res));
 });
  
 export default signin;

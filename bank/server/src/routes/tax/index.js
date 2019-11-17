@@ -1,7 +1,9 @@
 import express from 'express';
 import axios from 'axios';
-import requiresLogin from '../../middleware/auth';
+import jwt from 'jsonwebtoken';
+import { jwtMW } from '../../middleware/auth';
 
+const jsonParser = express.json();
 export const taxRouter = express.Router();
 
 export const sendUserCreateRequest = (req, res, next) => {
@@ -32,8 +34,10 @@ export const sendTaxRequest = (req, res, next) => {
         amount,
         tax,
     } = req.body;
+    const { passportId } = jwt.verify(req.headers.authorization.split(' ')[1], 'keyboard cat 4 ever');
+    
     axios.post(
-        `http://localhost:8787/api/taxes/${req.session.userId}`, 
+        `http://localhost:8787/api/taxes/${passportId}`, 
         JSON.stringify({
             destination,
             amount,
@@ -50,10 +54,13 @@ export const sendTaxRequest = (req, res, next) => {
     })
 }
 
-taxRouter.get("/", requiresLogin, function(req, res){
-    axios.get(`http://localhost:8787/api/taxes/${req.session.userId}/taxRate`)
+taxRouter.get("/", jsonParser, jwtMW, function(req, res){
+    const { passportId } = jwt.verify(req.headers.authorization.split(' ')[1], 'keyboard cat 4 ever');
+    
+    axios.get(`http://localhost:8787/api/taxes/taxRate/${passportId}`)
     .then((response) => {
-        console.log(response);
-        res.send(200);
+        res.send({
+            taxRate: response.data.taxRate,
+        })
     })
 });

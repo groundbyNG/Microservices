@@ -1,20 +1,20 @@
 import express from 'express';
-import session from 'express-session';
+import bodyParser from 'body-parser';
+
 import transactionRouter from './transaction';
 import { taxRouter } from './tax';
 import signinRouter from './signin';
 import signupRouter from './signup';
-import logoutRouter from './logout';
 
 const app = express();
 
-app.use(session({
-    secret: 'work hard',
-    resave: true,
-    saveUninitialized: false
-  }));
-
-app.use('/api/logout', logoutRouter);
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
+  next();
+});
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.use('/api/signup', signupRouter);
 app.use('/api/signin', signinRouter);
 app.use('/api/transaction', transactionRouter);

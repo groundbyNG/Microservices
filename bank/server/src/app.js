@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
 import app from './routes';
 
 const db = mongoose.connection;
@@ -13,8 +12,6 @@ db.once('open', () => {
   console.log('Connected to mongoose')
 });
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
 app.listen({port: 8686}, () => {
   console.log('Server ready');
 });
